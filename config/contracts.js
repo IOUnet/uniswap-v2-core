@@ -33,9 +33,39 @@ module.exports = {
       UniswapV2Factory: {
          fromIndex: 0,
          args: ['$accounts[0]']
-       }
+       },
+    
+
+    TokTst: { 
+      deploy: false
+    }, //todo add totalsupply
+    Bytomtest: {
+      instanceOf: 'TokTst',
+        fromIndex: 0,
+        args: ["Bytom", "BTM"], 
+
+    },
+      
+    Waytst: {
+      instanceOf: 'TokTst',
+      fromIndex: 0,
+      args: ["WaykiChain", "WIC"], 
+
+      },
+    Kybertst: {
+      instanceOf: 'TokTst',
+      fromIndex: 0,
+      args: ["KNC", "QUB"], 
+
+      }},
+  afterDeploy: async ({contracts, web3, logger}) => {
+      await contracts.UniswapV2Factory.methods.createPair (
+        contracts.Waytst.options.address, contracts.Kybertst.options.address).
+        send({from: web3.eth.defaultAccount});      
     }
+
   },
+
 
   // default environment, merges with the settings in default
   // assumed to be the intended environment by `embark run`
@@ -46,6 +76,15 @@ module.exports = {
       "$WEB3"  // uses pre existing web3 object if available (e.g in Mist)
     ]
   },
+
+  gana: {
+    dappConnection: [
+    //  "ws://localhost:8546",
+      "http://localhost:8080",
+   //   "$WEB3"  // uses pre existing web3 object if available (e.g in Mist)
+    ]
+  },
+
 
   // merges with the settings in default
   // used with "embark run privatenet"
